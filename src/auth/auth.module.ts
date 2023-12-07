@@ -1,16 +1,17 @@
-import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { TypeOrmExModule } from 'src/configs/db/typeorm-ex.module';
-import { UserRepository } from './user.repository';
-import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
+import { Module } from "@nestjs/common";
+import { AuthController } from "./auth.controller";
+import { AuthService } from "./auth.service";
+import { TypeOrmExModule } from "src/configs/db/typeorm-ex.module";
+import { UserRepository } from "./user.repository";
+import { JwtModule } from "@nestjs/jwt";
+import { PassportModule } from "@nestjs/passport";
+import { JwtStrategy } from "./dto/jwt.strategy";
 
 @Module({
   imports: [
-    PassportModule.register({ defultStrategy: 'jwt' }),
+    PassportModule.register({ defaultStrategy: "jwt" }),
     JwtModule.register({
-      secret: 'Secret1234',
+      secret: "Secret1234",
       signOptions: {
         expiresIn: 60 * 60,
       },
@@ -18,6 +19,7 @@ import { PassportModule } from '@nestjs/passport';
     TypeOrmExModule.forCustomRepository([UserRepository]),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
+  exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}

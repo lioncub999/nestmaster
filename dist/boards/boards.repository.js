@@ -13,35 +13,39 @@ const boards_entity_1 = require("./boards.entity");
 const boards_model_1 = require("./boards.model");
 const common_1 = require("@nestjs/common");
 let BoardRepository = class BoardRepository extends typeorm_1.Repository {
-    async getBoardById(id) {
-        const found = await this.findOneBy({ id });
+    async getBoardById(id, user) {
+        const found = await this.findOne({ where: { id, userId: user.id } });
         if (!found) {
             throw new common_1.NotFoundException();
         }
         return found;
     }
-    async getAllBoards() {
-        return this.find();
+    async getAllBoards(user) {
+        const query = this.createQueryBuilder("board");
+        query.where("board.userId = :userId", { userId: user.id });
+        const boards = await query.getMany();
+        return boards;
     }
-    async createBoard(createBoardDto) {
+    async createBoard(createBoardDto, user) {
         const { title, description } = createBoardDto;
         const board = new boards_entity_1.Board();
         board.title = title;
         board.description = description;
         board.status = boards_model_1.BoardStatus.PUBLIC;
+        board.user = user;
         await board.save();
         return board;
     }
-    async deleteBoard(id) {
-        const result = this.delete(id);
+    async deleteBoard(id, user) {
+        const result = await this.delete({ id, userId: user.id });
         if ((await result).affected === 0) {
             throw new common_1.NotFoundException(`${id} 아이디는 없음`);
         }
     }
-    async updateBoard(id, status) {
-        const board = await this.getBoardById(id);
+    async updateBoard(id, status, user) {
+        const board = await this.getBoardById(id, user);
         board.status = status;
-        await this.save(board);
+        await board.save();
         return board;
     }
 };

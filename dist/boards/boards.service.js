@@ -20,20 +20,20 @@ let BoardsService = class BoardsService {
     constructor(boardRepository) {
         this.boardRepository = boardRepository;
     }
-    async getAllBoards() {
-        return this.boardRepository.getAllBoards();
+    async getAllBoards(user) {
+        return this.boardRepository.getAllBoards(user);
     }
-    async getBoardById(id) {
-        return this.boardRepository.getBoardById(id);
+    async getBoardById(id, user) {
+        return this.boardRepository.getBoardById(id, user);
     }
-    async createBoard(createBoardDto) {
-        return this.boardRepository.createBoard(createBoardDto);
+    async createBoard(createBoardDto, user) {
+        return this.boardRepository.createBoard(createBoardDto, user);
     }
-    async deleteBoard(id) {
-        return this.boardRepository.deleteBoard(id);
+    async deleteBoard(id, user) {
+        return this.boardRepository.deleteBoard(id, user);
     }
-    async updateBoard(id, status) {
-        return this.boardRepository.updateBoard(id, status);
+    async updateBoard(id, status, user) {
+        return this.boardRepository.updateBoard(id, status, user);
     }
 };
 exports.BoardsService = BoardsService;

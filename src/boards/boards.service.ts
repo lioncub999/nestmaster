@@ -2,36 +2,44 @@
 https://docs.nestjs.com/providers#services
 */
 
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Board, BoardStatus } from './boards.model';
-import { InjectRepository } from '@nestjs/typeorm';
-import { BoardRepository } from './boards.repository';
-import { CreateBoardDto } from './dto/create-boards.dto';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { Board, BoardStatus } from "./boards.model";
+import { InjectRepository } from "@nestjs/typeorm";
+import { BoardRepository } from "./boards.repository";
+import { CreateBoardDto } from "./dto/create-boards.dto";
+import { User } from "src/auth/user.entity";
 
 @Injectable()
 export class BoardsService {
   constructor(
     @InjectRepository(BoardRepository)
-    private boardRepository: BoardRepository,
+    private boardRepository: BoardRepository
   ) {}
 
-  async getAllBoards(): Promise<Board[]> {
-    return this.boardRepository.getAllBoards();
+  async getAllBoards(user: User): Promise<Board[]> {
+    return this.boardRepository.getAllBoards(user);
   }
 
-  async getBoardById(id: number): Promise<Board> {
-    return this.boardRepository.getBoardById(id);
+  async getBoardById(id: number, user: User): Promise<Board> {
+    return this.boardRepository.getBoardById(id, user);
   }
 
-  async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
-    return this.boardRepository.createBoard(createBoardDto);
+  async createBoard(
+    createBoardDto: CreateBoardDto,
+    user: User
+  ): Promise<Board> {
+    return this.boardRepository.createBoard(createBoardDto, user);
   }
 
-  async deleteBoard(id: number): Promise<void> {
-    return this.boardRepository.deleteBoard(id);
+  async deleteBoard(id: number, user: User): Promise<void> {
+    return this.boardRepository.deleteBoard(id, user);
   }
 
-  async updateBoard(id: number, status: BoardStatus): Promise<Board> {
-    return this.boardRepository.updateBoard(id, status);
+  async updateBoard(
+    id: number,
+    status: BoardStatus,
+    user: User
+  ): Promise<Board> {
+    return this.boardRepository.updateBoard(id, status, user);
   }
 }

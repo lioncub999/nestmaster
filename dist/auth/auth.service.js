@@ -28,7 +28,7 @@ let AuthService = class AuthService {
     async signIn(authCredentialsDto) {
         const username = await this.userRepository.signIn(authCredentialsDto);
         if (!username) {
-            throw new common_1.UnauthorizedException('Invalid Credentials');
+            throw new common_1.UnauthorizedException("Invalid Credentials");
         }
         const payload = { username };
         const accessToken = await this.jwtService.sign(payload);

@@ -24,8 +24,8 @@ let UserRepository = class UserRepository extends typeorm_1.Repository {
             await user.save();
         }
         catch (error) {
-            if (error.code === '23505') {
-                throw new common_1.ConflictException('중복');
+            if (error.code === "23505") {
+                throw new common_1.ConflictException("중복");
             }
             else {
                 throw new common_1.InternalServerErrorException();
@@ -36,10 +36,10 @@ let UserRepository = class UserRepository extends typeorm_1.Repository {
         const { username, password } = authCredentialsDto;
         const user = await this.findOneBy({ username });
         if (user && (await bcrypt.compare(password, user.password))) {
-            return 'logIn success';
+            return username;
         }
         else {
-            throw new common_1.UnauthorizedException('logIn failed');
+            throw new common_1.UnauthorizedException("logIn failed");
         }
     }
 };

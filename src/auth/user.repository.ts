@@ -1,13 +1,13 @@
-import { CustomRepository } from 'src/configs/db/typeorm-ex.decorator';
-import { Repository } from 'typeorm';
-import { User } from './user.entity';
-import { AuthCredentialsDto } from './dto/auth-credential.dto';
-import * as bcrypt from 'bcryptjs';
+import { CustomRepository } from "src/configs/db/typeorm-ex.decorator";
+import { Repository } from "typeorm";
+import { User } from "./user.entity";
+import { AuthCredentialsDto } from "./dto/auth-credential.dto";
+import * as bcrypt from "bcryptjs";
 import {
   ConflictException,
   InternalServerErrorException,
   UnauthorizedException,
-} from '@nestjs/common';
+} from "@nestjs/common";
 
 @CustomRepository(User)
 export class UserRepository extends Repository<User> {
@@ -24,8 +24,8 @@ export class UserRepository extends Repository<User> {
     try {
       await user.save();
     } catch (error) {
-      if (error.code === '23505') {
-        throw new ConflictException('중복');
+      if (error.code === "23505") {
+        throw new ConflictException("중복");
       } else {
         throw new InternalServerErrorException();
       }
@@ -37,9 +37,9 @@ export class UserRepository extends Repository<User> {
     const user = await this.findOneBy({ username });
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      return 'logIn success';
+      return username;
     } else {
-      throw new UnauthorizedException('logIn failed');
+      throw new UnauthorizedException("logIn failed");
     }
   }
 }

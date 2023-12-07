@@ -12,12 +12,13 @@ const boards_controller_1 = require("./boards.controller");
 const common_1 = require("@nestjs/common");
 const typeorm_ex_module_1 = require("../configs/db/typeorm-ex.module");
 const boards_repository_1 = require("./boards.repository");
+const auth_module_1 = require("../auth/auth.module");
 let BoardsModule = class BoardsModule {
 };
 exports.BoardsModule = BoardsModule;
 exports.BoardsModule = BoardsModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_ex_module_1.TypeOrmExModule.forCustomRepository([boards_repository_1.BoardRepository])],
+        imports: [typeorm_ex_module_1.TypeOrmExModule.forCustomRepository([boards_repository_1.BoardRepository]), auth_module_1.AuthModule],
         controllers: [boards_controller_1.BoardsController],
         providers: [boards_service_1.BoardsService],
     })

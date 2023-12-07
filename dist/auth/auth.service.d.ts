@@ -1,6 +1,6 @@
-import { UserRepository } from './user.repository';
-import { AuthCredentialsDto } from './dto/auth-credential.dto';
-import { JwtService } from '@nestjs/jwt';
+import { UserRepository } from "./user.repository";
+import { AuthCredentialsDto } from "./dto/auth-credential.dto";
+import { JwtService } from "@nestjs/jwt";
 export declare class AuthService {
     private userRepository;
     private jwtService;

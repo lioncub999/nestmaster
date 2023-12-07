@@ -1,13 +1,17 @@
+import { Board } from "src/boards/boards.entity";
 import {
   BaseEntity,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
-} from 'typeorm';
+} from "typeorm";
+
+import * as bcrypt from "bcrypt";
 
 @Entity()
-@Unique(['username'])
+@Unique(["username"])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -17,4 +21,12 @@ export class User extends BaseEntity {
 
   @Column()
   password: string;
+
+  @OneToMany((type) => Board, (board) => board.user, { eager: true })
+  boards: Board[];
+
+  async validatePassword(password: string): Promise<boolean> {
+    let isValid = await bcrypt.compare(password, this.password);
+    return isValid;
+  }
 }
